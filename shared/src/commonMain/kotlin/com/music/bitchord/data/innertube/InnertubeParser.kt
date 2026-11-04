@@ -628,14 +628,13 @@ object InnertubeParser {
         val out = LinkedHashMap<String, ShelfItem>()
         collectRenderers(root, "musicTwoRowItemRenderer").forEach { renderer ->
             val item = parseTwoRowItem(renderer) ?: return@forEach
-            item.browseId?.let { out.putIfAbsent(it, item) }
+            item.browseId?.let { out.getOrPut(it) { item } }
         }
         collectRenderers(root, "musicResponsiveListItemRenderer").forEach { renderer ->
             val item = parseBrowseItem(renderer) ?: return@forEach
-            out.putIfAbsent(
-                item.browseId,
-                ShelfItem(item.title, item.subtitle, item.thumbnailUrl, null, item.browseId),
-            )
+            out.getOrPut(item.browseId) {
+                ShelfItem(item.title, item.subtitle, item.thumbnailUrl, null, item.browseId)
+            }
         }
         return LibraryItemPage(out.values.toList(), continuationToken(root))
     }

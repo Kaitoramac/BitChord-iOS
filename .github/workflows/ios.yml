@@ -45,8 +45,8 @@ jobs:
         run: |
           mkdir -p build
           xcodebuild -version
-          set -o pipefail
-          xcodebuild \
+          # Full log to a file; on failure print the errors and fail the job (nothing is swallowed).
+          if ! xcodebuild \
             -project iosApp/BitChord.xcodeproj \
             -scheme BitChord \
             -configuration Release \
@@ -56,14 +56,25 @@ jobs:
             CODE_SIGNING_ALLOWED=NO \
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGN_IDENTITY="" \
-            build 2>&1 | tee build/xcodebuild.log | grep -E "error:|warning: .*BitChord|BUILD (SUCCEEDED|FAILED)" || true
-          test -d build/DerivedData/Build/Products/Release-iphoneos/BitChord.app
+            build > build/xcodebuild.log 2>&1; then
+            echo "::group::Errors"
+            grep -E "error:|e: file:|FAILED" build/xcodebuild.log | head -80
+            echo "::endgroup::"
+            tail -40 build/xcodebuild.log
+            exit 1
+          fi
+          grep -E "embedAndSignAppleFrameworkForXcode|BUILD SUCCEEDED" build/xcodebuild.log | tail -5
+          # The bundle directory exists even after a failed compile: check the executable itself.
+          APP=build/DerivedData/Build/Products/Release-iphoneos/BitChord.app
+          test -x "$APP/BitChord"
+          ls -lh "$APP/BitChord"
 
       - name: Package the IPA
         run: |
           mkdir -p Payload
           cp -R build/DerivedData/Build/Products/Release-iphoneos/BitChord.app Payload/
           zip -qry BitChord-unsigned.ipa Payload
+          ls -lh BitChord-unsigned.ipa
 
       - uses: actions/upload-artifact@v4
         with:
