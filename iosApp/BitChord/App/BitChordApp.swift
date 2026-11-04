@@ -109,13 +109,15 @@ extension View {
     /// Glass, as Apple Music does), and floats above the tab bar before that.
     @ViewBuilder
     func miniPlayerAccessory<Accessory: View>(@ViewBuilder _ accessory: () -> Accessory) -> some View {
+        // Built once here: the closures below escape, and a non-escaping parameter cannot be captured by them.
+        let content = accessory()
         if #available(iOS 26, *) {
             self
-                .tabViewBottomAccessory { accessory() }
+                .tabViewBottomAccessory { content }
                 .tabBarMinimizeBehavior(.onScrollDown)
         } else {
             self.overlay(alignment: .bottom) {
-                FloatingMiniPlayer { accessory() }
+                FloatingMiniPlayer { content }
             }
         }
     }
