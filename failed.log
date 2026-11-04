@@ -1,0 +1,7 @@
+build	Build (unsigned)	2026-11-04T13:01:44.6460570Z [36;1m  grep -E "error:|e: file:|FAILED" build/xcodebuild.log | head -80[0m
+build	Build (unsigned)	2026-11-04T13:06:09.7574960Z /Users/runner/work/BitChord-iOS/BitChord-iOS/iosApp/BitChord/App/AppModel.swift:65:65: error: 'async' call in an autoclosure that does not support concurrency
+build	Build (unsigned)	2026-11-04T13:06:09.7579000Z /Users/runner/work/BitChord-iOS/BitChord-iOS/iosApp/BitChord/Services/CatalogService.swift:43:27: error: value of type 'MusicService' has no member 'newReleases'
+build	Build (unsigned)	2026-11-04T13:06:09.7621150Z ** BUILD FAILED **
+build	Build (unsigned)	2026-11-04T13:06:09.8116030Z /Users/runner/work/BitChord-iOS/BitChord-iOS/iosApp/BitChord/App/AppModel.swift:65:65: error: 'async' call in an autoclosure that does not support concurrency
+build	Build (unsigned)	2026-11-04T13:06:09.8122440Z /Users/runner/work/BitChord-iOS/BitChord-iOS/iosApp/BitChord/Services/CatalogService.swift:43:27: error: value of type 'MusicService' has no member 'newReleases'
+build	Build (unsigned)	2026-11-04T13:06:09.8346000Z ** BUILD FAILED **

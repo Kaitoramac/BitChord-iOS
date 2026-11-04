@@ -40,7 +40,7 @@ final class CatalogService {
     }
 
     func newReleases() async throws -> [ShelfModel] {
-        try await service.newReleases().map(ShelfModel.init)
+        try await service.latestReleases().map(ShelfModel.init)
     }
 
     func categories() async throws -> [CategoryModel] {

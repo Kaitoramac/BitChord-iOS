@@ -62,7 +62,12 @@ final class AppModel: ObservableObject {
     func enqueue(_ card: Card, next: Bool) {
         Task {
             do {
-                let songs = try await card.song.map { [$0] } ?? songs(of: card)
+                let songs: [Song]
+                if let song = card.song {
+                    songs = [song]
+                } else {
+                    songs = try await self.songs(of: card)
+                }
                 next ? player.playNext(songs) : player.addToQueue(songs)
                 show(next ? "Playing Next" : "Added to Queue")
             } catch {

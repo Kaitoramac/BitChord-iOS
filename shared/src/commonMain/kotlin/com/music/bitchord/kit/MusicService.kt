@@ -188,7 +188,8 @@ class MusicService(
 
     /** New releases, charts and the rest of YouTube Music's Explore page (the "New" tab). */
     @Throws(Throwable::class)
-    suspend fun newReleases(): List<Shelf> = call("new") {
+    // Not `newReleases`: Objective-C reserves the `new…` method family, and Kotlin/Native would export it as `doNewReleases`.
+    suspend fun latestReleases(): List<Shelf> = call("new") {
         coroutineScope {
             val releases = async { shelvesOf("FEmusic_new_releases") }
             val explore = async { shelvesOf("FEmusic_explore") }
