@@ -51,6 +51,23 @@ cd iosApp && xcodegen
 
 Diagnostics go to the unified log: Console.app, subsystem `com.music.bitchord` (turn on Settings → Verbose Logging for InnerTubeX's client selection and the PO token flow).
 
+## Phone-only workflow
+
+Develop with Claude Code, build on GitHub Actions, install with SideStore, all from the phone.
+
+```
+Claude Code (phone) ── commit / PR ──▶ GitHub ── push to main ──▶ Actions (macOS)
+                                                                      │
+SideStore (phone) ◀── refresh source ◀── release build-N: BitChord.ipa + source.json
+```
+
+1. **One-time setup on a PC**: install SideStore on the iPhone (it needs a pairing file created once from a computer; see the SideStore docs).
+2. **Add the source in SideStore**: Sources → + → `https://github.com/Kaitoramac/BitChord-iOS/releases/latest/download/source.json`, then install BitChord from it. SideStore signs it on the phone with your Apple ID (a dedicated one is best).
+3. **Each change**: ask Claude Code (claude.ai/code, repository connected) for the change. It works on a branch, opens a PR and checks CI; merge when green. The `main` build publishes `build-N`.
+4. **Update**: in SideStore, refresh the source and tap Update. Refresh apps every 7 days (free Apple ID).
+
+Every build has a higher build number (`0.1.<run>`), so SideStore always sees it as an update.
+
 ## Installing on an iPhone
 
 Not on the App Store: a third-party YouTube client breaks YouTube's terms, and the code is GPL-3.0.

@@ -11,3 +11,8 @@ iosApp/BitChord.xcodeproj/
 xcuserdata/
 DerivedData/
 *.ipa
+
+# Local scratch
+*.zip
+failed.log
+xcodebuild.log
